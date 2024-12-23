@@ -6,12 +6,13 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
 
-const monitoramento int = 3
-const delay = 3
+const monitoramento int = 1
+const delay = 1
 
 func main() {
 	exibeInstrucao()
@@ -76,8 +77,10 @@ func testaSite(site string) {
 
 	if resp.StatusCode == 200 {
 		fmt.Println("Site:", site, "foi carregado com sucesso!")
+		registraLog(site, true)
 	} else {
 		fmt.Println("Site:", site, "esta com problemas. Status code: ", resp.StatusCode)
+		registraLog(site, false)
 	}
 }
 
@@ -105,4 +108,17 @@ func leSiteDoArquivo() []string {
 
 	arquivo.Close()
 	return sites
+}
+
+func registraLog(site string, status bool) {
+	arquivo, err := os.OpenFile("logs.txt", os.O_RDWR|os.O_APPEND|os.O_CREATE, 0666)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	msg := time.Now().Format("02/01/2006 15:04:05 - ") + site + " - online: " + strconv.FormatBool(status) + "\n"
+	arquivo.WriteString(msg)
+
+	arquivo.Close()
 }
