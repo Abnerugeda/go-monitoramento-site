@@ -1,0 +1,3 @@
+https://carefy.com.br/login
+http://censo-dev.carefy.com.br
+http://censo-api-dev.carefy.com.br
