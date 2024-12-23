@@ -44,7 +44,7 @@ func execCommand(comando int) {
 	case 1:
 		iniciarMonitoramento()
 	case 2:
-		fmt.Println("Exibindo logs...")
+		imprimeLogs()
 	case 0:
 		fmt.Println("Saindo do programa...")
 		os.Exit(0)
@@ -121,4 +121,18 @@ func registraLog(site string, status bool) {
 	arquivo.WriteString(msg)
 
 	arquivo.Close()
+}
+
+func imprimeLogs() {
+	fmt.Println("Exibindo logs...")
+	arquivo, err := os.ReadFile("logs.txt")
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("########### LOGS ###########")
+	fmt.Println(string(arquivo))
+	fmt.Println("############################")
 }
